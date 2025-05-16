@@ -2,20 +2,23 @@ from coordinates import Coordinates
 
 class Piece:
     def __init__(self, position, player):
-        self._position = position  # Coordinates object
-        self.player = player       # Player object
-        self.in_camp = False       # Track if the piece is in a camp
+        self._position = position
+        self.player = player
+        self.in_camp = False
+        self.on_enemy_line = False
 
     @property
     def position(self):
-        """Read-only access to position (safety)"""
         return self._position
 
-    def move_to(self, destination):
-        """Update position and reset camp status if leaving a camp"""
-        if not self.in_camp:
-            self._position = destination
-        # Else: Prevent movement if already in a camp (Katarenga rule)
+    def move_to(self, destination, game):
+        if self.in_camp:
+            return  # Blocage
+        
+        self._position = destination
+        self.on_enemy_line = game.is_enemy_line(destination, self.player)
+        self.in_camp = game.is_enemy_camp(destination, self.player)
+
 
 if __name__ == "__main__":
     # Test basic functionality
