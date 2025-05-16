@@ -1,6 +1,6 @@
 class Coordinates:
     def __init__(self, x, y):
-        self._x = x  # Use private attributes
+        self._x = x
         self._y = y
 
     @property
