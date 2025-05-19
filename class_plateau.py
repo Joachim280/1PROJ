@@ -26,6 +26,34 @@ class Plateau:
         for ligne in self.cases:
             print(" ".join(case.lettre if case else '.' for case in ligne))
 
+    def is_occupied_by(self, coord, player):
+        x, y = coord
+        case = self.cases[x][y]
+        return case.pion == player
+
+    def get_piece(self, coord):
+        x, y = coord
+        return self.cases[x][y].pion
+
+    def move_piece(self, from_coord, to_coord):
+        fx, fy = from_coord
+        tx, ty = to_coord
+        piece = self.cases[fx][fy].pion
+        self.cases[fx][fy].pion = None
+        self.cases[tx][ty].pion = piece
+
+    def get_enemy_camps(self, player):
+        if player == 1:
+            return [(0, 0), (7, 0)]
+        else:
+            return [(0, 7), (7, 7)]
+
+    def is_valid(self, x, y):
+        return 0 <= x < 8 and 0 <= y < 8
+
+    def get_title_color(self, x, y):
+        return self.cases[x][y].lettre
+
 if __name__ == "__main__":
     print("Quadrants disponibles :")
     for i in range(1, 5):
