@@ -1,4 +1,4 @@
-from coordinates import Coordinates
+from .coordinates import Coordinates
 
 class Piece:
     def __init__(self, position, player):

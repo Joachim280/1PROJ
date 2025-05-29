@@ -1,6 +1,6 @@
-from coordinates import Coordinates
-from piece import Piece
-from player import Player
+from .coordinates import Coordinates
+from .piece import Piece
+from .player import Player
 
 class Game:
     def __init__(self, board, players):
