@@ -120,5 +120,17 @@ class OrientationScreen(tk.Frame):
         game_type = getattr(self.controller.state, "game_type", "katarenga")
         game_mode = getattr(self.controller.state, "game_mode", "local")
         
+        # si mode réseau et host, envoie d'abord la config au client
+        if game_mode == "network":
+            network_manager = getattr(self.controller.state, 'network_manager', None)
+            network_mode = getattr(self.controller.state, 'network_mode', 'host')
+            
+            if network_manager and network_mode == "host":
+                # envoie la config au client
+                network_manager.send_message("setup", {
+                    "quadrants": quad_mats,
+                    "game_type": game_type
+                })
+        
         # lance la partie
         self.controller.show("game", quad_mats=quad_mats, game_type=game_type, game_mode=game_mode)

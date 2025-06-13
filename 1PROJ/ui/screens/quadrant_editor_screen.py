@@ -361,7 +361,11 @@ class QuadrantEditorScreen(tk.Frame):
             custom_quadrants.append(quadrant)
         
         # on enregistre
-        plateau_manager.save_custom_board(custom_quadrants)
+        success = plateau_manager.save_custom_board(custom_quadrants)
+
+        if success:
+            # on notifie le build_screen pour qu'il rafraîchisse sa liste
+            self._notify_build_screen_refresh()
         
         # puis afficher le message de confirmation
         popup = tk.Toplevel(self)
@@ -399,3 +403,13 @@ class QuadrantEditorScreen(tk.Frame):
         
         # passage à l'écran d'orientation
         self.controller.show("orientation")
+
+    def _notify_build_screen_refresh(self):
+        """notifie le build_screen qu'il doit rafraîchir sa liste de plateaux"""
+        try:
+            # si le build_screen existe dans les écrans, on lui dit de se rafraîchir
+            if "build" in self.controller.screens:
+                self.controller.screens["build"].refresh_after_edit()
+        except Exception as e:
+            # pas grave si ça échoue, c'est juste pour l'UX
+            print(f"erreur notification build_screen: {e}")

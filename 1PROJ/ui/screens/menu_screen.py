@@ -71,10 +71,9 @@ class MenuScreen(tk.Frame):
         
         tk.Radiobutton(
             mode_frame,
-            text="2 joueurs (réseau) - à venir",
+            text="2 joueurs (réseau)",
             variable=self.selected_mode,
             value="network",
-            state="disabled",
             font=("Helvetica", 12)
         ).pack(anchor="w", pady=5)
 
@@ -114,7 +113,12 @@ class MenuScreen(tk.Frame):
         # Stocke les paramètres dans le state global
         self.controller.state.game_type = self.selected_game.get()
         self.controller.state.game_mode = self.selected_mode.get()
-        self.controller.show("build")
+        
+        # si mode réseau, on va d'abord à l'écran network
+        if self.selected_mode.get() == "network":
+            self.controller.show("network")
+        else:
+            self.controller.show("build")
         
     def _goto_welcome(self):
         """retourne à l'écran d'accueil"""
